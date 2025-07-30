@@ -1,0 +1,430 @@
+﻿@model IEnumerable<SimpleCMSWeb.Models.Appointment>;
+@{
+    Layout = "_DashboardDoctor";
+    ViewData["Title"] = "Doctor Dashboard";
+}
+
+<div class="container my-4">
+    <!-- Summary Cards -->
+    <div class="row g-3 text-center mb-4">
+        <div class="col-md-4">
+            <div class="card shadow-sm border-0 rounded-4">
+                <div class="card-body">
+                    <h6 class="text-muted mb-2">Total Appointments</h6>
+                    <h2 class="fw-bold" id="total-count">@ViewBag.TotalCount</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card shadow-sm border-0 rounded-4">
+                <div class="card-body">
+                    <h6 class="text-muted mb-2">Pending</h6>
+                    <h2 class="fw-bold text-warning" id="pending-count">@ViewBag.PendingCount</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card shadow-sm border-0 rounded-4">
+                <div class="card-body">
+                    <h6 class="text-muted mb-2">Completed</h6>
+                    <h2 class="fw-bold text-success" id="completed-count">@ViewBag.CompletedCount</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Upcoming Appointments -->
+    <div class="card shadow-sm border-0 rounded-4 mb-4">
+        <div class="card-header bg-white d-flex justify-content-between align-items-center rounded-top-4">
+            <h5 class="mb-0 fw-semibold">Upcoming Patient Appointments</h5>
+            <span class="text-muted small">@DateTime.Now.ToString("MM/dd/yyyy")</span>
+        </div>
+        <div class="table-responsive">
+            <table class="table align-middle mb-0">
+                <thead class="table-light">
+                    <tr class="small text-muted">
+                        <th>Patient Name</th>
+                        <th>Clinic</th>
+                        <th>Scheduled</th>
+                        <th>Phone Number</th>
+                        <th>Status</th>
+                        <th class="text-end">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var appointment in Model.Where(a => a.IsApprovedDoctor == 0 && a.IsDone == 0))
+                    {
+                        <tr id="row-@appointment.Id">
+                            <td>@appointment.Patient?.Firstname @appointment.Patient?.Lastname</td>
+                            <td>@appointment.Clinic?.Name</td>
+                            <td>
+                                <div class="small">@appointment.Consultdate?.ToString("MM/dd/yyyy")</div>
+                            </td>
+                            <td>@appointment.Clinic?.ContactNo</td>
+                            <td>
+                                <span class="badge bg-warning-subtle text-warning border border-warning px-2 py-1">
+                                    <i class="bi bi-hourglass-split"></i> Pending
+                                </span>
+                            </td>
+                            <td class="text-end">
+                                <button class="btn btn-sm btn-outline-primary view-patient-btn"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#patientModal"
+                                        data-name="@appointment.Patient?.Firstname @appointment.Patient?.Lastname"
+                                        data-age="@appointment.Patient?.Age"
+                                        data-gender="@appointment.Patient?.Gender"
+                                        data-address="@appointment.Patient?.Homeaddress">
+                                    <i class="bi bi-eye"></i>
+                                </button>
+                                <a href="#"
+                                   class="btn btn-sm btn-outline-success mark-done-btn"
+                                   data-id="@appointment.Id">
+                                    <i class="bi bi-check"></i>
+                                </a>
+                                <a href="#"
+                                   class="btn btn-sm btn-outline-danger cancel-btn"
+                                   data-id="@appointment.Id"
+                                   data-name="@appointment.Patient?.Firstname @appointment.Patient?.Lastname">
+                                    <i class="bi bi-x"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Completed Appointments -->
+    <div class="card shadow-sm border-0 rounded-4 mb-4">
+        <div class="card-header bg-white rounded-top-4">
+            <h5 class="mb-0 fw-semibold">Accomplished Patient Appointments</h5>
+        </div>
+        <div class="table-responsive">
+            <table class="table align-middle mb-0">
+                <thead class="table-light">
+                    <tr class="small text-muted">
+                        <th>Patient Name</th>
+                        <th>Clinic</th>
+                        <th>Scheduled</th>
+                        <th>Phone Number</th>
+                        <th>Status</th>
+                        <th class="text-end">Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="completed-appointments">
+                    @foreach (var appointment in Model.Where(a => a.IsDone == 1))
+                    {
+                        <tr>
+                            <td>@appointment.Patient?.Firstname @appointment.Patient?.Lastname</td>
+                            <td>@appointment.Clinic?.Name</td>
+                            <td>
+                                <div class="small">@appointment.Consultdate?.ToString("MM/dd/yyyy")</div>
+                            </td>
+                            <td>@appointment.Clinic?.ContactNo</td>
+                            <td>
+                                <span class="badge bg-success-subtle text-success border border-success px-2 py-1">
+                                    <i class="bi bi-check-circle"></i> Completed
+                                </span>
+                            </td>
+                            <td class="text-end">
+                                <button class="btn btn-sm btn-outline-primary view-patient-btn"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#patientModal"
+                                        data-name="@appointment.Patient?.Firstname @appointment.Patient?.Lastname"
+                                        data-age="@appointment.Patient?.Age"
+                                        data-gender="@appointment.Patient?.Gender"
+                                        data-address="@appointment.Patient?.Homeaddress">
+                                    <i class="bi bi-eye"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Cancelled Appointments -->
+    <div class="card shadow-sm border-0 rounded-4 mb-4">
+        <div class="card-header bg-white rounded-top-4">
+            <h5 class="mb-0 fw-semibold">Cancelled Patient Appointments</h5>
+        </div>
+        <div class="table-responsive">
+            <table class="table align-middle mb-0">
+                <thead class="table-light">
+                    <tr class="small text-muted">
+                        <th>Patient Name</th>
+                        <th>Clinic</th>
+                        <th>Scheduled</th>
+                        <th>Phone Number</th>
+                        <th>Status</th>
+                        <th class="text-end">Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="cancelled-appointments">
+                    @foreach (var appointment in Model.Where(a => a.IsApprovedDoctor == 0 && a.IsDone == -1))
+                    {
+                        <tr>
+                            <td>@appointment.Patient?.Firstname @appointment.Patient?.Lastname</td>
+                            <td>@appointment.Clinic?.Name</td>
+                            <td>
+                                <div class="small">@appointment.Consultdate?.ToString("MM/dd/yyyy")</div>
+                            </td>
+                            <td>@appointment.Clinic?.ContactNo</td>
+                            <td>
+                                <span class="badge bg-danger-subtle text-danger border border-danger px-2 py-1">
+                                    <i class="bi bi-x-octagon"></i> Cancelled
+                                </span>
+                            </td>
+                            <td class="text-end">
+                                <button class="btn btn-sm btn-outline-primary view-patient-btn"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#patientModal"
+                                        data-name="@appointment.Patient?.Firstname @appointment.Patient?.Lastname"
+                                        data-age="@appointment.Patient?.Age"
+                                        data-gender="@appointment.Patient?.Gender"
+                                        data-address="@appointment.Patient?.Homeaddress">
+                                    <i class="bi bi-eye"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Patient Info Modal -->
+<div class="modal fade" id="patientModal" tabindex="-1" aria-labelledby="patientModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-md">
+        <div class="modal-content border-0 rounded-4 shadow-lg">
+            <div class="modal-header bg-white border-0 border-bottom border-light px-4 pt-4">
+                <h5 class="modal-title fw-semibold text-primary" id="patientModalLabel">
+                    <i class="bi bi-person-circle me-2"></i>Patient Information
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body bg-light px-4 py-4">
+                <div class="rounded bg-white p-4 shadow-sm">
+                    <div class="mb-3">
+                        <label class="form-label text-muted">Full Name</label>
+                        <div class="fs-5 fw-semibold text-dark" id="modalName">Loading...</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label text-muted">Age</label>
+                            <div class="fw-semibold text-dark" id="modalAge">Loading...</div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label text-muted">Gender</label>
+                            <div class="fw-semibold text-dark" id="modalGender">Loading...</div>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="form-label text-muted">Address</label>
+                        <div class="fw-semibold text-dark" id="modalAddress">Loading...</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Cancel Confirmation Modal -->
+<div class="modal fade" id="cancelModal" tabindex="-1" aria-labelledby="cancelModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content rounded-3 shadow">
+            <div class="modal-header">
+                <h5 class="modal-title" id="cancelModalLabel">Cancel Appointment</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to cancel the appointment for <strong id="cancelPatientName">this patient</strong>?</p>
+                <input type="hidden" id="cancelAppointmentId" />
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No, Keep It</button>
+                <button type="button" class="btn btn-danger" id="confirmCancelBtn">Yes, Cancel It</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Toast Container -->
+<div class="position-fixed top-0 end-0 p-3" style="z-index: 1080">
+    <div id="actionToast" class="toast align-items-center text-white bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+            <div class="toast-body" id="toastBody"></div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+    </div>
+</div>
+
+<style>
+    .badge {
+        border-radius: 0.5rem;
+        font-size: 0.75rem;
+    }
+
+    .table th {
+        white-space: nowrap;
+    }
+
+    .table td {
+        vertical-align: middle;
+    }
+
+    .table-hover tbody tr:hover {
+        background-color: #f6f9fc;
+    }
+
+    .btn-outline-primary,
+    .btn-outline-success,
+    .btn-outline-danger {
+        border-radius: 0.375rem;
+    }
+
+    .card-header {
+        background-color: #f8f9fa;
+        border-bottom: none;
+    }
+
+    .table-responsive {
+        overflow-x: auto;
+    }
+</style>
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        // View Patient Details in Modal
+        document.querySelectorAll('.view-patient-btn').forEach(button => {
+            button.addEventListener('click', function () {
+                document.getElementById('modalName').textContent = this.dataset.name;
+                document.getElementById('modalAge').textContent = this.dataset.age;
+                document.getElementById('modalGender').textContent = this.dataset.gender;
+                document.getElementById('modalAddress').textContent = this.dataset.address;
+            });
+        });
+
+        // Toast Notification Handler
+        function showToast(message, type = "success") {
+            const toastEl = document.getElementById('actionToast');
+            const toastBody = document.getElementById('toastBody');
+
+            toastEl.classList.remove('bg-success', 'bg-danger', 'bg-warning', 'text-white', 'text-dark');
+
+            if (type === 'success') {
+                toastEl.classList.add('bg-success', 'text-white');
+            } else if (type === 'danger') {
+                toastEl.classList.add('bg-danger', 'text-white');
+            } else if (type === 'warning') {
+                toastEl.classList.add('bg-warning', 'text-dark');
+            }
+
+            toastBody.textContent = message;
+            const toast = new bootstrap.Toast(toastEl);
+            toast.show();
+        }
+
+        $(document).ready(function () {
+            // Mark As Done
+            $('.mark-done-btn').on('click', function (e) {
+                e.preventDefault();
+                const appointmentId = $(this).data('id');
+                const $row = $(`#row-${appointmentId}`);
+
+                $.ajax({
+                    url: '/DoctorAccount/MarkAsDone',
+                    method: 'POST',
+                    data: { id: appointmentId },
+                    success: function (response) {
+                        if (response.success) {
+                            $row.find('.badge')
+                                .removeClass('bg-warning-subtle text-warning border-warning')
+                                .addClass('bg-success-subtle text-success border-success')
+                                .html('<i class="bi bi-check-circle"></i> Completed');
+
+                            $row.find('.mark-done-btn, .cancel-btn').remove();
+
+                            $row.fadeOut(300, function () {
+                                $(this).appendTo('#completed-appointments').fadeIn();
+                                showToast("✅ Appointment marked as done!", "success");
+
+                                $('#total-count').text(response.totalCount);
+                                $('#pending-count').text(response.pendingCount);
+                                $('#completed-count').text(response.completedCount);
+                            });
+                        } else {
+                            showToast("❌ Failed to mark appointment as done.", "danger");
+                        }
+                    },
+                    error: function () {
+                        showToast("⚠️ Server error. Please try again.", "warning");
+                    }
+                });
+            });
+
+            // Cancel Appointment
+            $('.cancel-btn').on('click', function (e) {
+                e.preventDefault();
+                const appointmentId = $(this).data('id');
+                const patientName = $(this).data('name');
+
+                $('#cancelAppointmentId').val(appointmentId);
+                $('#cancelPatientName').text(patientName);
+
+                const modal = new bootstrap.Modal(document.getElementById('cancelModal'));
+                modal.show();
+            });
+
+            $('#confirmCancelBtn').on('click', function () {
+                const appointmentId = $('#cancelAppointmentId').val();
+                const $row = $(`#row-${appointmentId}`);
+
+                $.ajax({
+                    url: '/DoctorAccount/CancelAppointment',
+                    method: 'POST',
+                    data: { id: appointmentId },
+                    success: function (response) {
+                        if (response.success) {
+                            // Close the modal
+                            $('#cancelModal').modal('hide');
+
+                            // Clone the row and update its status
+                            const $canceledRow = $row.clone();
+                            $canceledRow.find('.badge')
+                                .removeClass('bg-warning-subtle text-warning border-warning')
+                                .addClass('bg-danger-subtle text-danger border-danger')
+                                .html('<i class="bi bi-x-octagon"></i> Cancelled');
+
+                            // Remove action buttons except view
+                            $canceledRow.find('.mark-done-btn, .cancel-btn').remove();
+
+                            // Add fade animation and append to cancelled section
+                            $row.fadeOut(300, function() {
+                                $(this).remove();
+                                $canceledRow.hide().appendTo('#cancelled-appointments').fadeIn(300);
+                                showToast("🚫 Appointment canceled.", "warning");
+
+                                // Update counters
+                                if (response.totalCount) {
+                                    $('#total-count').text(response.totalCount);
+                                    $('#pending-count').text(response.pendingCount);
+                                    $('#completed-count').text(response.completedCount);
+                                }
+                            });
+                        } else {
+                            showToast("❌ Cancel failed: " + response.message, "danger");
+                        }
+                    },
+                    error: function () {
+                        showToast("⚠️ Server error while canceling.", "warning");
+                    }
+                });
+            });
+        });
+    </script>
+}
