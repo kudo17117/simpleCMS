@@ -1,0 +1,117 @@
+﻿@model SimpleCMSWeb.Models.Employee
+@{
+    Layout = "_DashboardAdmin";
+}
+
+
+<form method="post" asp-action="Profile" asp-controller="AdminAccount" enctype="multipart/form-data">
+    @* @Html.AntiForgeryToken() *@
+    <div class="container my-5" style="max-width: 750px;">
+        <div class="card shadow-sm border-0 rounded-4 p-4">
+            <!-- Profile Header -->
+            <div class="d-flex align-items-center justify-content-between flex-wrap">
+                <div class="d-flex align-items-center gap-3">
+                    <!-- Doctor Photo -->
+                    <div class="position-relative">
+                        <img id="profilePreview"
+                             src="@(Model.Photo != null ? $"data:image/png;base64,{Convert.ToBase64String(Model.Photo)}" : Url.Content("~/images/doctor-default.png"))"
+                             class="rounded-circle border border-2"
+                             style="width: 100px; height: 100px; object-fit: cover;"
+                             alt="Doctor Photo">
+
+                        <label for="PhotoFile" class="btn btn-sm btn-light border position-absolute bottom-0 end-0 rounded-circle" style="transform: translate(25%, 25%);">
+                            <i class="bi bi-pencil"></i>
+                        </label>
+
+                        <input type="file" name="PhotoFile" id="PhotoFile" class="d-none" accept="image/*" onchange="previewImage(event)" />
+                    </div>
+
+                    <div>
+                        <h4 class="fw-bold mb-0 text-dark">@Model.FirstName @Model.LastName</h4>
+                        <p class="text-muted">@Model.EmployeeType.EmployeeTypeDescription</p>
+                    </div>
+                </div>
+            </div>
+
+            <hr class="my-4" />
+
+            <!-- Personal Information -->
+            <h6 class="mt-4 text-uppercase fw-bold text-muted">Personal Information</h6>
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label class="form-label small text-muted">First Name</label>
+                    <input asp-for="FirstName" class="form-control form-control-sm" placeholder="First name" />
+                </div>  
+                <div class="col-md-6">
+                    <label class="form-label small text-muted">Middle Name</label>
+                    <input asp-for="MiddleName" class="form-control form-control-sm" placeholder="Middle name" />
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label small text-muted">Last Name</label>
+                    <input asp-for="LastName" class="form-control form-control-sm" placeholder="Last name" />
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label small text-muted">Extension Name</label>
+                    <input asp-for="ExtensioName" class="form-control form-control-sm" placeholder="Jr., Sr., III, etc." />
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label small text-muted">Gender</label>
+                    <input asp-for="Gender" class="form-control form-control-sm" placeholder="M / F" />
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label small text-muted">Birthdate</label>
+                    <input asp-for="BirthDate" class="form-control form-control-sm" type="date" />
+                </div>
+                <div class="col-md-12">
+                    <label class="form-label small text-muted">Place of Birth</label>
+                    <input asp-for="PlaceOfBirth" class="form-control form-control-sm" />
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label small text-muted">Civil Status</label>
+                    <input asp-for="CivilStatus" class="form-control form-control-sm" />
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label small text-muted">Citizenship</label>
+                    <input asp-for="Citizenship" class="form-control form-control-sm" />
+                </div>
+            </div>
+
+            <!-- Contact Details -->
+            <h6 class="mt-4 text-uppercase fw-bold text-muted">Contact Details</h6>
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label class="form-label small text-muted">Email</label>
+                    <input asp-for="Email" class="form-control form-control-sm" placeholder="Email address" />
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label small text-muted">Mobile No</label>
+                    <input asp-for="ContactNo" class="form-control form-control-sm" />
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label small text-muted">Address</label>
+                    <input asp-for="Address" class="form-control form-control-sm" />
+                </div>
+            </div>
+            <hr class="my-4" />
+            <!-- Save Button -->
+            <div class="text-end mt-4">
+                <button type="submit" class="btn btn-primary px-4 rounded-pill shadow-sm">
+                    <i class="bi bi-check-circle me-1"></i> Save Changes
+                </button>
+            </div>
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+    <script>
+        function previewImage(event) {
+            const reader = new FileReader();
+            reader.onload = function () {
+                const output = document.getElementById('profilePreview');
+                output.src = reader.result;
+            };
+            reader.readAsDataURL(event.target.files[0]);
+        }
+    </script>
+}
