@@ -1,0 +1,181 @@
+﻿@model SimpleCMSWeb.Models.Patient
+
+<form id="updatePatientForm" asp-action="UpdatePatient" asp-controller="AdminAccount" method="post" class="needs-validation" novalidate>
+    @Html.AntiForgeryToken()
+    <input type="hidden" asp-for="Patientid" />
+
+    <div class="card mb-4">
+        <div class="card-header bg-light-subtle">
+            <h5 class="mb-0">Patient Information</h5>
+        </div>
+        <div class="card-body">
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <label asp-for="Hospitalno" class="form-label">Hospital No</label>
+                    <input asp-for="Hospitalno" class="form-control" />
+                    <span asp-validation-for="Hospitalno" class="text-danger small"></span>
+                </div>
+                <div class="col-md-4">
+                    <label asp-for="Patientbarcode" class="form-label">Patient Barcode</label>
+                    <input asp-for="Patientbarcode" class="form-control" />
+                    <span asp-validation-for="Patientbarcode" class="text-danger small"></span>
+                </div>
+                <div class="col-md-4">
+                    <label asp-for="Patienttype" class="form-label">Patient Type</label>
+                    <select asp-for="Patienttype" class="form-select">
+                        <option value="1">Inpatient</option>
+                        <option value="2">Outpatient</option>
+                        <option value="3">Emergency</option>
+                    </select>
+                    <span asp-validation-for="Patienttype" class="text-danger small"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-header bg-light-subtle">
+            <h5 class="mb-0">Personal Details</h5>
+        </div>
+        <div class="card-body">
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <label asp-for="Lastname" class="form-label">Last Name</label>
+                    <input asp-for="Lastname" class="form-control" />
+                    <span asp-validation-for="Lastname" class="text-danger small"></span>
+                </div>
+                <div class="col-md-4">
+                    <label asp-for="Firstname" class="form-label">First Name</label>
+                    <input asp-for="Firstname" class="form-control" />
+                    <span asp-validation-for="Firstname" class="text-danger small"></span>
+                </div>
+                <div class="col-md-4">
+                    <label asp-for="Middlename" class="form-label">Middle Name</label>
+                    <input asp-for="Middlename" class="form-control" />
+                    <span asp-validation-for="Middlename" class="text-danger small"></span>
+                </div>
+            </div>
+
+            <div class="row g-3 mt-3">
+                <div class="col-md-3">
+                    <label asp-for="Birthdate" class="form-label">Birth Date</label>
+                    <input asp-for="Birthdate" type="date" class="form-control" />
+                    <span asp-validation-for="Birthdate" class="text-danger small"></span>
+                </div>
+                <div class="col-md-3">
+                    <label asp-for="Age" class="form-label">Age</label>
+                    <input asp-for="Age" class="form-control" />
+                    <span asp-validation-for="Age" class="text-danger small"></span>
+                </div>
+                <div class="col-md-3">
+                    <label asp-for="Gender" class="form-label">Gender</label>
+                    <select asp-for="Gender" class="form-select">
+                        <option value="M">Male</option>
+                        <option value="F">Female</option>
+                        <option value="O">Other</option>
+                    </select>
+                    <span asp-validation-for="Gender" class="text-danger small"></span>
+                </div>
+                <div class="col-md-3">
+                    <label asp-for="Civilstatus" class="form-label">Civil Status</label>
+                    <select asp-for="Civilstatus" class="form-select">
+                        <option value="Single">Single</option>
+                        <option value="Married">Married</option>
+                        <option value="Divorced">Divorced</option>
+                        <option value="Widowed">Widowed</option>
+                    </select>
+                    <span asp-validation-for="Civilstatus" class="text-danger small"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-header bg-light-subtle">
+            <h5 class="mb-0">Contact Information</h5>
+        </div>
+        <div class="card-body">
+            <div class="mb-3">
+                <label asp-for="Homeaddress" class="form-label">Home Address</label>
+                <input asp-for="Homeaddress" class="form-control" />
+                <span asp-validation-for="Homeaddress" class="text-danger small"></span>
+            </div>
+
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label asp-for="Mobileno" class="form-label">Mobile No</label>
+                    <input asp-for="Mobileno" class="form-control" />
+                    <span asp-validation-for="Mobileno" class="text-danger small"></span>
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="Emailaddress" class="form-label">Email Address</label>
+                    <input asp-for="Emailaddress" class="form-control" />
+                    <span asp-validation-for="Emailaddress" class="text-danger small"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-header bg-light-subtle">
+            <h5 class="mb-0">Other Information</h5>
+        </div>
+        <div class="card-body">
+            <div class="mb-3">
+                <select asp-for="Bloodtype" class="form-select">
+                    <option value="A+">A+</option>
+                    <option value="A-">A-</option>
+                    <option value="B+">B+</option>
+                    <option value="B-">B-</option>
+                    <option value="O+">O+</option>
+                    <option value="O-">O-</option>
+                    <option value="AB+">AB+</option>
+                    <option value="AB-">AB-</option>
+                </select>
+            </div>
+
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label asp-for="Religion" class="form-label">Religion</label>
+                    <input asp-for="Religion" class="form-control" />
+                    <span asp-validation-for="Religion" class="text-danger small"></span>
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="Nationality" class="form-label">Nationality</label>
+                    <input asp-for="Nationality" class="form-control" />
+                    <span asp-validation-for="Nationality" class="text-danger small"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-header bg-light-subtle">
+            <h5 class="mb-0">Medical Information</h5>
+        </div>
+        <div class="card-body">
+            <div class="mb-3">
+                <label asp-for="Allergies" class="form-label">Allergies</label>
+                <textarea asp-for="Allergies" class="form-control" rows="3"></textarea>
+                <span asp-validation-for="Allergies" class="text-danger small"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Familymedicalhistory" class="form-label">Family History</label>
+                <input asp-for="Familymedicalhistory" class="form-control" rows="3">
+            </div>
+            <select asp-for="Isactive" class="form-select">
+                <option value="true">Active</option>
+                <option value="false">In-Active</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="d-flex justify-content-end gap-2">
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+            <i class="bi bi-x-circle me-1"></i> Close
+        </button>
+        <button type="submit" class="btn btn-primary">
+            <i class="bi bi-save me-1"></i> Save Changes
+        </button>
+    </div>
+</form>

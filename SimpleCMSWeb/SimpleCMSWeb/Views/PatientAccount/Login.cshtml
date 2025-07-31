@@ -1,0 +1,110 @@
+﻿@model SimpleCMSWeb.Models.Patientuser
+
+@{
+    ViewData["Title"] = "Patient Login";
+    Layout = "_AuthLayout";
+}
+
+<section class="vh-100" style="background: linear-gradient(90deg, #3a8dde 0%, #1e5fa3 100%);">
+    <div class="container h-100 py-5">
+        <div class="row justify-content-center align-items-center h-100">
+            <div class="col-md-7 col-lg-5">
+                <div class="card shadow border-0 rounded-4">
+                    <div class="card-body p-5">
+                        <form asp-controller="PatientAccount" asp-action="Login" method="post" id="loginForm">
+                            <!-- Title -->
+                            <div class="text-center mb-4">
+                                <h2 class="fw-bold text-primary" style="color: #3a8dde;">PATIENT LOGIN</h2>
+                                <p class="text-secondary mb-0" style="color: #1e5fa3;">Sign into your account</p>
+                            </div>
+
+                            <!-- Username -->
+                            <div class="mb-3">
+                                <label for="Username" class="form-label fw-semibold text-primary">Username</label>
+                                <input type="text" asp-for="Username" id="Username" class="form-control form-control-lg border-primary" required />
+                                <span asp-validation-for="Username" class="text-danger"></span>
+                            </div>
+
+                            <!-- Password with Show/Hide -->
+                            <div class="mb-4">
+                                <label for="Password" class="form-label fw-semibold text-primary">Password</label>
+                                <div class="input-group">
+                                    <input type="password" asp-for="Password" id="Password" class="form-control form-control-lg border-primary" required />
+                                    <button type="button" class="input-group-text bg-white border-primary" id="togglePassword" aria-label="Show password" style="cursor: pointer;">
+                                        <i class="bi bi-eye" id="eyeIcon"></i>
+                                    </button>
+                                </div>
+                                <span asp-validation-for="Password" class="text-danger"></span>
+                            </div>
+
+                            @if (!ViewData.ModelState.IsValid)
+                            {
+                                <div class="alert alert-danger" id="loginError">
+                                    @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                                    {
+                                        <div>@error.ErrorMessage</div>
+                                    }
+                                </div>
+                            }
+
+
+                            <!-- Hidden input for appointment payload -->
+                            <input type="hidden" id="appointmentPayload" name="appointmentPayload" />
+
+                            <!-- Submit Button -->
+                            <div class="d-grid mb-3">
+                                <button type="submit" class="btn btn-lg text-white fw-semibold" style="background: linear-gradient(90deg, #3a8dde 0%, #1e5fa3 100%); border: none;">
+                                    Login
+                                </button>
+                            </div>
+
+                            <!-- Links -->
+                            <div class="d-flex justify-content-between align-items-center">
+                                <a asp-controller="PatientAccount" asp-action="ForgotPassword" class="small text-primary">Forgot password?</a>
+                                <a asp-action="Register" class="small text-primary">Register here</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <script>
+        // Save appointment data from sessionStorage to hidden field
+        document.getElementById("loginForm").addEventListener("submit", function () {
+            const data = sessionStorage.getItem("appointmentData");
+            if (data) {
+                document.getElementById("appointmentPayload").value = data;
+            }
+        });
+
+        // Toggle Show/Hide Password
+        document.getElementById("togglePassword").addEventListener("click", function () {
+            const passwordInput = document.getElementById("Password");
+            const eyeIcon = document.getElementById("eyeIcon");
+
+            const isPassword = passwordInput.type === "password";
+            passwordInput.type = isPassword ? "text" : "password";
+
+            // Toggle icon class
+            eyeIcon.classList.toggle("bi-eye");
+            eyeIcon.classList.toggle("bi-eye-slash");
+        });
+
+        // Hide error alert on input
+        const inputs = document.querySelectorAll('#Username, #Password');
+        const errorAlert = document.getElementById('loginError');
+
+        inputs.forEach(input => {
+            input.addEventListener('input', function () {
+                if (errorAlert) {
+                    errorAlert.style.display = 'none';
+                }
+            });
+        });
+    </script>
+}
+

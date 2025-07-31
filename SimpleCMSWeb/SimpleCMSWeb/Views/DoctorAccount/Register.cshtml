@@ -1,0 +1,316 @@
+﻿@model SimpleCMSWeb.Models.ModelView.DoctorRegisterVM
+@{
+    ViewData["Title"] = "Doctor Register";
+    Layout = "_AuthLayout";
+}
+
+<section class="vh-100 bg-light d-flex align-items-center justify-content-center">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-10 col-lg-8">
+                <div class="card shadow-sm border-0 rounded-4">
+                    <div class="card-body p-5">
+                        <h3 class="fw-bold mb-4 text-center text-primary">Register as Doctor</h3>
+
+                        <!-- Progress bar -->
+                        <div class="progress mb-4">
+                            <div id="progressBar" class="progress-bar bg-primary" style="width: 33%"></div>
+                        </div>
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                        <form asp-controller="DoctorAccount" asp-action="Register" method="post" enctype="multipart/form-data" id="multiStepForm">
+                            @Html.AntiForgeryToken()
+
+                            <!-- STEP 1: Basic Info -->
+                            <div class="form-step" id="step-1">
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <label asp-for="FirstName" class="form-label fw-semibold">First Name</label>
+                                        <input asp-for="FirstName" class="form-control" required />
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label asp-for="LastName" class="form-label fw-semibold">Last Name</label>
+                                        <input asp-for="LastName" class="form-control" required />
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label asp-for="MiddleName" class="form-label fw-semibold">Middle Name</label>
+                                        <input asp-for="MiddleName" class="form-control" required />
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label asp-for="Gender" class="form-label fw-semibold">Gender</label>
+                                        <select asp-for="Gender" class="form-control" required>
+                                            <option value="">Select Gender</option>
+                                            <option value="M">Male</option>
+                                            <option value="F">Female</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label asp-for="BirthDate" class="form-label fw-semibold">Birth Date</label>
+                                        <input asp-for="BirthDate" class="form-control" type="date" required />
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label asp-for="ContactNo" class="form-label fw-semibold">Phone Number</label>
+                                        <input asp-for="ContactNo" 
+                                        class="form-control"                                                                    
+                                        type="number"
+                                        id="number"
+                                        placeholder="09XXXXXXXXX"
+                                        />
+                                        <div class="text-danger" id="perror"></div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label asp-for="Email" class="form-label fw-semibold">Email</label>
+                                        <input asp-for="Email" type="email" class="form-control" required />
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label asp-for="Address" class="form-label fw-semibold">Address</label>
+                                        <input asp-for="Address" type="text" class="form-control" required />
+                                    </div>
+                                </div>
+                                <div class="d-flex justify-content-end mt-4">
+                                    <button type="button" class="btn btn-primary next-step">Next</button>
+                                </div>
+                            </div>
+
+                            <!-- STEP 2: Professional Info -->
+                            <div class="form-step d-none" id="step-2">
+                                <div class="mb-4">
+                                    <label class="form-label fw-semibold mb-2">Are you a Physician?</label>
+                                    <div class="btn-group" role="group" aria-label="Physician toggle">
+                                        <input asp-for="EmployeeTypeId" type="radio" class="btn-check"  id="physicianYes" value="555">
+                                        <label class="btn btn-outline-primary" for="physicianYes">Yes</label>
+
+                                        <input asp-for="EmployeeTypeId" type="radio" class="btn-check"  id="physicianNo" value="444" checked>
+                                        <label class="btn btn-outline-primary" for="physicianNo">No</label>
+                                    </div>
+                                </div>
+
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <label asp-for="SpecializationId" class="form-label fw-semibold">Specialization</label>
+                                        <select asp-for="SpecializationId" id="specializationSelect" class="form-select" disabled>
+                                            <option value="">Select Specialization</option>
+                                            <option value="1">Cardiologist</option>
+                                            <option value="2">Endocrinologist</option>
+                                            <option value="3">Gastroenterologist</option>
+                                            <option value="4">Hematologist</option>
+                                            <option value="5">Nephrologist</option>
+                                            <option value="6">Pulmonologist</option>
+                                            <option value="7">Rheumatologist</option>
+                                            <option value="8">Infectious Disease Specialist</option>
+                                            <option value="9">Neurologist</option>
+                                            <option value="10">Psychiatrist</option>
+                                            <option value="11">Neurosurgeon</option>
+                                            <option value="12">Pediatrician</option>
+                                            <option value="13">Pediatric Neurologist</option>
+                                            <option value="14">Pediatric Cardiologist</option>
+                                            <option value="15">General Practitioner (GP)</option>
+                                            <option value="16">Family Medicine</option>
+                                            <option value="17">Internal Medicine Doctor (Internist)</option>
+                                            <option value="18">Obstetrician</option>
+                                            <option value="19">Gynecologist</option>
+                                            <option value="20">OB-GYN</option>
+                                            <option value="21">General Surgeon</option>
+                                            <option value="22">Orthopedic Surgeon</option>
+                                            <option value="23">Plastic Surgeon</option>
+                                            <option value="24">Otolaryngologist (ENT)</option>
+                                            <option value="25">Urologist</option>
+                                            <option value="26">Thoracic Surgeon</option>
+                                            <option value="27">Vascular Surgeon</option>
+                                            <option value="28">Colorectal Surgeon</option>
+                                            <option value="29">Ophthalmologist</option>
+                                            <option value="30">Dermatologist</option>
+                                            <option value="31">Allergist / Immunologist</option>
+                                            <option value="32">Oncologist</option>
+                                            <option value="33">Radiologist</option>
+                                            <option value="34">Pathologist</option>
+                                            <option value="35">Anesthesiologist</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label asp-for="LicenceNo" class="form-label fw-semibold">License No.</label>
+                                        <input asp-for="LicenceNo" class="form-control" required />
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label asp-for="PTR" class="form-label fw-semibold">PTR</label>
+                                        <input asp-for="PTR" class="form-control" required />
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label class="form-label fw-semibold">Profile Photo</label>
+                                        <input asp-for="Photo" type="file" class="form-control" required />
+                                    </div>
+                                </div>
+
+                                <div class="d-flex justify-content-between mt-3">
+                                    <button type="button" class="btn btn-outline-secondary prev-step">Previous</button>
+                                    <button type="button" class="btn btn-primary btn-sm px-4 next-step">Next</button>
+                                </div>
+                            </div>
+
+                            <!-- STEP 3: Account Info -->
+                            <div class="form-step d-none" id="step-3">
+                                <div class="row g-3">
+                                    <div class="col-md-12">
+                                        <label class="form-label fw-semibold">Username</label>
+                                        <input asp-for="Username" class="form-control" required />
+                                    </div>
+                                    <div class="col-md-12">
+                                        <label class="form-label fw-semibold">Password</label>
+                                        <div class="position-relative">
+                                            <input id="passwordInput" asp-for="Userpass" type="password" class="form-control pe-5" placeholder="Enter a Password" required />
+                                            <span class="position-absolute top-50 end-0 translate-middle-y me-3" style="cursor: pointer;" id="togglePassword">
+                                                <i id="toggleIcon" class="bi bi-eye-slash fs-5"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <label class="form-label fw-semibold">Confirm Password</label>
+                                        <input asp-for="ConfirmPassword" type="password" class="form-control" placeholder="Confirm your Password" required />
+                                        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="d-flex justify-content-between mt-4">
+                                    <button type="button" class="btn btn-outline-secondary prev-step">Previous</button>
+                                    <button type="submit" class="btn btn-success">Submit</button>
+                                </div>
+                            </div>
+                        </form>
+
+                        <div class="text-center mt-3">
+                            Already have an account? <a href="@Url.Action("Login", "DoctorAccount")" class="text-primary fw-semibold">Login here</a>.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+
+    <script>
+        const steps = document.querySelectorAll('.form-step');
+        const progressBar = document.getElementById('progressBar');
+        let currentStep = 0;
+
+        document.querySelectorAll('.next-step').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const currentFormStep = steps[currentStep];
+                const inputs = currentFormStep.querySelectorAll('input, select');
+                let allFilled = true;
+
+                inputs.forEach(input => {
+                    if (input.hasAttribute('required') && !input.disabled) {
+                        if (input.type === 'radio') {
+                            const groupName = input.name;
+                            const checked = currentFormStep.querySelector(`input[name="${groupName}"]:checked`);
+                            if (!checked) {
+                                allFilled = false;
+                            }
+                        } else if (input.value.trim() === '') {
+                            allFilled = false;
+                            input.classList.add('is-invalid');
+                        } else {
+                            input.classList.remove('is-invalid');
+                        }
+                    }
+                });
+
+                if (!allFilled) {
+                    alert('Please fill in all required fields.');
+                    return;
+                }
+
+                if (currentStep < steps.length - 1) {
+                    steps[currentStep].classList.add('d-none');
+                    currentStep++;
+                    steps[currentStep].classList.remove('d-none');
+                    updateProgressBar();
+                }
+            });
+        });
+
+        document.querySelectorAll('.prev-step').forEach(btn => {
+            btn.addEventListener('click', () => {
+                if (currentStep > 0) {
+                    steps[currentStep].classList.add('d-none');
+                    currentStep--;
+                    steps[currentStep].classList.remove('d-none');
+                    updateProgressBar();
+                }
+            });
+        });
+
+        const updateProgressBar = () => {
+            const percent = ((currentStep + 1) / steps.length) * 100;
+            progressBar.style.width = percent + '%';
+        };
+
+        const togglePassword = document.getElementById('togglePassword');
+        const toggleIcon = document.getElementById('toggleIcon');
+        const passwordInput = document.getElementById('passwordInput');
+
+        togglePassword.addEventListener('click', () => {
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+            toggleIcon.classList.toggle('bi-eye');
+            toggleIcon.classList.toggle('bi-eye-slash');
+        });
+
+        const specializationSelect = document.getElementById('specializationSelect');
+        const physicianYes = document.getElementById('physicianYes');
+        const physicianNo = document.getElementById('physicianNo');
+
+        physicianYes.addEventListener('change', () => {
+            specializationSelect.disabled = false;
+        });
+        physicianNo.addEventListener('change', () => {
+            specializationSelect.disabled = true;
+            specializationSelect.value = "";
+        });
+
+        // ✅ ADD live input event listeners to clear red borders
+        document.querySelectorAll('input, select').forEach(input => {
+            input.addEventListener('input', () => {
+                if (input.value.trim() !== '') {
+                    input.classList.remove('is-invalid');
+                }
+            });
+        });
+
+        // ✅ Birthdate year limit
+        const birthInput = document.querySelector('[name="BirthDate"]');
+        birthInput.addEventListener('change', () => {
+            const val = birthInput.value;
+            const date = new Date(val);
+            const year = date.getFullYear();
+            if (year < 1900 || year > 2005) {
+                birthInput.classList.add('is-invalid');
+                alert('Birthdate must be between 1900 and 2005.');
+                birthInput.value = '';
+            } else {
+                birthInput.classList.remove('is-invalid');
+            }
+        });
+
+        const numberInput = document.getElementById('number');
+        const error1 = document.getElementById('perror');
+        numberInput.addEventListener('input', () => {
+            const value = numberInput.value;
+            if (value.length > 11) {
+                numberInput.classList.add('is-invalid');
+                alert('Contact number must be 11 digits.');
+                numberInput.value = '';
+            } else {
+                numberInput.classList.remove('is-invalid');
+            }
+        });
+    </script>
+}
+
+}

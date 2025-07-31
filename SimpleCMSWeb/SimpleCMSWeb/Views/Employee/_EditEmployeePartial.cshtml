@@ -1,0 +1,124 @@
+﻿@model SimpleCMSWeb.Models.Employee
+
+<form id="updateEmployeeForm" asp-action="UpdateEmployee" asp-controller="Employee" method="post" class="needs-validation" novalidate>
+    @Html.AntiForgeryToken()
+    <input type="hidden" asp-for="Employeeid" />
+
+    <div class="card mb-4">
+        <div class="card-header bg-light-subtle">
+            <h5 class="mb-0">Personal Information</h5>
+        </div>
+        <div class="card-body">
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <label asp-for="FirstName" class="form-label">First Name</label>
+                    <input asp-for="FirstName" class="form-control" />
+                    <span asp-validation-for="FirstName" class="text-danger small"></span>
+                </div>
+                <div class="col-md-4">
+                    <label asp-for="MiddleName" class="form-label">Middle Name</label>
+                    <input asp-for="MiddleName" class="form-control" />
+                    <span asp-validation-for="MiddleName" class="text-danger small"></span>
+                </div>
+                <div class="col-md-4">
+                    <label asp-for="LastName" class="form-label">Last Name</label>
+                    <input asp-for="LastName" class="form-control" />
+                    <span asp-validation-for="LastName" class="text-danger small"></span>
+                </div>
+            </div>
+
+            <div class="row g-3 mt-3">
+                <div class="col-md-4">
+                    <label asp-for="Gender" class="form-label">Gender</label>
+                    <select asp-for="Gender" class="form-select">
+                        <option value="M">Male</option>
+                        <option value="F">Female</option>
+                        <option value="O">Other</option>
+                    </select>
+                    <span asp-validation-for="Gender" class="text-danger small"></span>
+                </div>
+                <div class="col-md-4">
+                    <label asp-for="HireDate" class="form-label">Date Hired</label>
+                    <input asp-for="HireDate" type="date" class="form-control" />
+                </div>
+                <div class="mb-3">
+                    <label asp-for="SpecializationId" class="form-label">Specialization</label>
+                    <select asp-for="SpecializationId" asp-items="@(new SelectList(ViewBag.Specializations, "SpecializationId", "Name"))" class="form-select">
+                        <option value="">-- Select Specialization --</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-header bg-light-subtle">
+            <h5 class="mb-0">Contact Information</h5>
+        </div>
+        <div class="card-body">
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label asp-for="Email" class="form-label">Email Address</label>
+                    <input asp-for="Email" class="form-control" autocomplete="email" />
+                    <span asp-validation-for="Email" class="text-danger small"></span>
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="ContactNo" class="form-label">Contact Number</label>
+                    <input asp-for="ContactNo" class="form-control" />
+                    <span asp-validation-for="ContactNo" class="text-danger small"></span>
+                </div>
+            </div>
+
+            <div class="mb-3 mt-3">
+                <label asp-for="Address" class="form-label">Address</label>
+                <input asp-for="Address" class="form-control" autocomplete="street-address" />
+                <span asp-validation-for="Address" class="text-danger small"></span>
+            </div>
+        </div>
+    </div>
+
+  @*   <div class="card mb-4">
+        <div class="card-header bg-light-subtle">
+            <h5 class="mb-0">Emergency Contact</h5>
+        </div>
+        <div class="card-body">
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label asp-for="EmergencyContact" class="form-label">Contact Person</label>
+                    <input asp-for="EmergencyContact" class="form-control" />
+                    <span asp-validation-for="EmergencyContact" class="text-danger small"></span>
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="EmergencyContactNo" class="form-label">Contact Number</label>
+                    <input asp-for="EmergencyContactNo" class="form-control" />
+                    <span asp-validation-for="EmergencyContactNo" class="text-danger small"></span>
+                </div>
+            </div>
+        </div>
+    </div> *@
+
+    <div class="card mb-4">
+        <div class="card-header bg-light-subtle">
+            <h5 class="mb-0">Account Status</h5>
+        </div>
+        <div class="card-body">
+            <div class="mb-3">
+                <label asp-for="IsActive" class="form-label">Status</label>
+                <select asp-for="IsActive" class="form-select">
+                    <option value="true">Active</option>
+                    <option value="false">Inactive</option>
+                </select>
+                <span asp-validation-for="IsActive" class="text-danger small"></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="d-flex justify-content-end gap-2">
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+            <i class="bi bi-x-circle me-1"></i> Close
+        </button>
+        <button type="submit" class="btn btn-primary">
+            <i class="bi bi-save me-1"></i> Save Changes
+        </button>
+    </div>
+</form>

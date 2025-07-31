@@ -1,0 +1,116 @@
+﻿@model List<Employee>
+@{
+    Layout = "_DashboardAdmin";
+    ViewData["Title"] = "Pending Doctor Approvals";
+}
+
+<h2 class="mb-4">Pending Doctor Accounts</h2>
+
+<div class="row g-4">
+    @foreach (var emp in Model)
+    {
+        <div class="col-md-6 col-lg-4">
+            <div class="card shadow-sm rounded-3 h-100">
+                <div class="card-body">
+                    <h5 class="card-title mb-1">@emp.FirstName @emp.LastName</h5>
+                    <p class="card-text text-muted mb-2"><i class="bi bi-envelope"></i> @emp.Email</p>
+                    <p class="card-text"><i class="bi bi-calendar"></i> Submitted: @emp.EDateCreated?.ToString("MMMM dd, yyyy")</p>
+
+                    <div class="d-flex justify-content-between mt-3">
+                        <!-- View Details Button -->
+                        <button class="btn btn-outline-primary btn-sm view-btn"
+                                data-id="@emp.Employeeid"
+                                data-name="@emp.FirstName @emp.LastName"
+                                data-email="@emp.Email"
+                                data-phone="@emp.ContactNo"
+                                data-address="@emp.Address"
+                                data-date="@emp.EDateCreated?.ToString("MMMM dd, yyyy")">
+                            <i class="bi bi-eye"></i> View
+                        </button>
+
+                        <!-- Approve Form -->
+                        <form asp-action="ApproveDoctor" asp-controller="AdminAccount" method="post" class="d-inline">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="id" value="@emp.Employeeid" />
+                            <button type="submit" class="btn btn-success btn-sm">
+                                <i class="bi bi-check-circle"></i> Approve
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<!-- SINGLE Reusable Modal -->
+<div class="modal fade" id="employeeModal" tabindex="-1" aria-labelledby="employeeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content rounded-4 border-0 shadow">
+            <div class="modal-header bg-primary text-white rounded-top-4">
+                <h5 class="modal-title fw-semibold" id="employeeModalLabel">
+                    <i class="bi bi-person-vcard me-2"></i> Doctor Profile
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body p-4">
+                <div class="d-flex align-items-center mb-4">
+                    <div class="flex-shrink-0">
+                        <div class="bg-light rounded-circle d-flex justify-content-center align-items-center" style="width: 80px; height: 80px;">
+                            <i class="bi bi-person-circle fs-1 text-primary"></i>
+                        </div>
+                    </div>
+                    <div class="ms-3">
+                        <h4 class="mb-1" id="modalName" style="font-weight: 600;">John Doe</h4>
+                        <p class="mb-0 text-muted" id="modalEmail">johndoe@email.com</p>
+                    </div>
+                </div>
+
+                <hr />
+
+                <div class="row mb-3">
+                    <div class="col-sm-4 fw-medium text-muted">Phone</div>
+                    <div class="col-sm-8" id="modalPhone"></div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-sm-4 fw-medium text-muted">Address</div>
+                    <div class="col-sm-8" id="modalAddress"></div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-sm-4 fw-medium text-muted">Registered On</div>
+                    <div class="col-sm-8" id="modalDate"></div>
+                </div>
+            </div>
+            <div class="modal-footer border-top-0">
+                <button class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                    <i class="bi bi-x-circle"></i> Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const modal = new bootstrap.Modal(document.getElementById("employeeModal"));
+
+            document.querySelectorAll(".view-btn").forEach(btn => {
+                btn.addEventListener("click", () => {
+                    document.getElementById("modalName").textContent = btn.dataset.name;
+                    document.getElementById("modalEmail").textContent = btn.dataset.email;
+                    document.getElementById("modalPhone").textContent = btn.dataset.phone;
+                    document.getElementById("modalAddress").textContent = btn.dataset.address;
+                    document.getElementById("modalDate").textContent = btn.dataset.date;
+
+                    modal.show();
+                });
+            });
+        });
+    </script>
+}
