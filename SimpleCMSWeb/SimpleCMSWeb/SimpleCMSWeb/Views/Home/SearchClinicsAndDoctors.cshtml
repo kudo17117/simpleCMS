@@ -1,0 +1,153 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    Layout = "_SelectionPage";
+    ViewData["Title"] = "Clinics and Doctors";
+}
+
+<!-- Appointment Section (Design Only) -->
+<section id="appointment" class="appointment section py-5">
+    <div class="container">
+        <div class="section-title text-center mb-5" data-aos="fade-up">
+            <h2>Find your way</h2>
+            <p>Search your best clinic and doctors in one search — try it now.</p>
+        </div>
+
+        <div class="row align-items-start">
+            <!-- Left: Doctor Image -->
+            <div class="col-lg-5 mb-4 mb-lg-0" data-aos="fade-right">
+                <img src="~/img/best_doctor.jpg" alt="Best Doctor" class="img-fluid rounded shadow" />
+            </div>
+
+            <!-- Right: Search & Appointment Carousel -->
+            <div class="col-lg-7" data-aos="fade-left">
+                <!-- Search Box -->
+                <div class="mb-4 position-relative">
+                    <div class="input-group shadow">
+                        <span class="input-group-text bg-primary text-white">
+                            <i class="bi bi-search"></i>
+                        </span>
+                        <input type="search" class="form-control" id="searchQuery" placeholder="Search for doctor, clinic..." autocomplete="off" />
+                    </div>
+
+                    <!-- Autocomplete Results Dropdown -->
+                    <ul id="searchResults" class="list-group position-absolute w-100 mt-1 z-3" style="display: none;"></ul>
+
+                    <small class="text-muted mt-2 d-block">
+                        <i class="bi bi-info-circle me-1"></i>
+                        Start typing to search available clinics or doctors in your area.
+                    </small>
+                </div>
+
+
+                <!-- Appointment Carousel -->
+                <div id="appointmentCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="5000">
+                    <div class="carousel-inner bg-light p-4 rounded shadow-sm">
+
+                        <!-- Luzon Slide -->
+                        <div class="carousel-item active">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <h6 class="mb-1 text-muted"><i class="bi bi-geo-alt-fill me-2 text-primary"></i>Region</h6>
+                                    <p class="mb-0 fw-semibold">Luzon</p>
+                                </div>
+                                <div class="col-md-6">
+                                    <h6 class="mb-1 text-muted"><i class="bi bi-map-fill me-2 text-success"></i>Province</h6>
+                                    <p class="mb-0 fw-semibold">Metro Manila</p>
+                                </div>
+                                <div class="col-md-6">
+                                    <h6 class="mb-1 text-muted"><i class="bi bi-building me-2 text-warning"></i>Municipality</h6>
+                                    <p class="mb-0 fw-semibold">Quezon City</p>
+                                </div>
+                                <div class="col-md-6">
+                                    <h6 class="mb-1 text-muted"><i class="bi bi-hospital me-2 text-danger"></i>Clinic</h6>
+                                    <p class="mb-0 fw-semibold">HealthFirst Clinic</p>
+                                </div>
+                                <div class="col-md-6">
+                                    <h6 class="mb-1 text-muted"><i class="bi bi-person-circle me-2 text-info"></i>Doctor</h6>
+                                    <p class="mb-0 fw-semibold">Dr. Jane Santos</p>
+                                </div>
+                                <div class="col-md-6">
+                                    <h6 class="mb-1 text-muted"><i class="bi bi-calendar-event-fill me-2 text-secondary"></i>Date</h6>
+                                    <p class="mb-0 fw-semibold">August 5, 2025 – 10:00 AM</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Visayas Slide -->
+                        <div class="carousel-item">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <h6 class="mb-1 text-muted"><i class="bi bi-geo-alt-fill me-2 text-primary"></i>Region</h6>
+                                    <p class="mb-0 fw-semibold">Visayas</p>
+                                </div>
+                                <div class="col-md-6">
+                                    <h6 class="mb-1 text-muted"><i class="bi bi-map-fill me-2 text-success"></i>Province</h6>
+                                    <p class="mb-0 fw-semibold">Cebu</p>
+                                </div>
+                                <div class="col-md-6">
+                                    <h6 class="mb-1 text-muted"><i class="bi bi-building me-2 text-warning"></i>Municipality</h6>
+                                    <p class="mb-0 fw-semibold">Cebu City</p>
+                                </div>
+                                <div class="col-md-6">
+                                    <h6 class="mb-1 text-muted"><i class="bi bi-hospital me-2 text-danger"></i>Clinic</h6>
+                                    <p class="mb-0 fw-semibold">CebuDoc Medical Center</p>
+                                </div>
+                                <div class="col-md-6">
+                                    <h6 class="mb-1 text-muted"><i class="bi bi-person-circle me-2 text-info"></i>Doctor</h6>
+                                    <p class="mb-0 fw-semibold">Dr. Miguel Reyes</p>
+                                </div>
+                                <div class="col-md-6">
+                                    <h6 class="mb-1 text-muted"><i class="bi bi-calendar-event-fill me-2 text-secondary"></i>Date</h6>
+                                    <p class="mb-0 fw-semibold">August 10, 2025 – 1:30 PM</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Mindanao Slide -->
+                        <div class="carousel-item">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <h6 class="mb-1 text-muted"><i class="bi bi-geo-alt-fill me-2 text-primary"></i>Region</h6>
+                                    <p class="mb-0 fw-semibold">Mindanao</p>
+                                </div>
+                                <div class="col-md-6">
+                                    <h6 class="mb-1 text-muted"><i class="bi bi-map-fill me-2 text-success"></i>Province</h6>
+                                    <p class="mb-0 fw-semibold">Davao del Sur</p>
+                                </div>
+                                <div class="col-md-6">
+                                    <h6 class="mb-1 text-muted"><i class="bi bi-building me-2 text-warning"></i>Municipality</h6>
+                                    <p class="mb-0 fw-semibold">Davao City</p>
+                                </div>
+                                <div class="col-md-6">
+                                    <h6 class="mb-1 text-muted"><i class="bi bi-hospital me-2 text-danger"></i>Clinic</h6>
+                                    <p class="mb-0 fw-semibold">Southern Med Clinic</p>
+                                </div>
+                                <div class="col-md-6">
+                                    <h6 class="mb-1 text-muted"><i class="bi bi-person-circle me-2 text-info"></i>Doctor</h6>
+                                    <p class="mb-0 fw-semibold">Dr. Lea Fernandez</p>
+                                </div>
+                                <div class="col-md-6">
+                                    <h6 class="mb-1 text-muted"><i class="bi bi-calendar-event-fill me-2 text-secondary"></i>Date</h6>
+                                    <p class="mb-0 fw-semibold">August 15, 2025 – 3:00 PM</p>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Carousel Controls -->
+                    <button class="carousel-control-prev" type="button" data-bs-target="#appointmentCarousel" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#appointmentCarousel" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section> <!-- End of Appointment section -->

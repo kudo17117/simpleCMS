@@ -1,0 +1,90 @@
+﻿@model SimpleCMSWeb.Models.Employee
+
+<div class="employee-profile">
+    <div class="row">
+        <!-- Personal Information -->
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Personal Information</h5>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <div class="text-muted small">Full Name</div>
+                        <div>@Model.LastName, @Model.FirstName @Model.MiddleName</div>
+                    </div>
+                    <div class="mb-3">
+                        <div class="text-muted small">Employee Type</div>
+                        <div>@Model.EmployeeType?.EmployeeTypeDescription</div>
+                    </div>
+                    <div class="mb-3">
+                        <div class="text-muted small">Specialization</div>
+                        <div>@Model.Specialization?.Name</div>
+                    </div>
+                    <div class="mb-3">
+                        <div class="text-muted small">Status</div>
+                        <div>
+                            <span class="badge @(Model.IsActive ? "bg-success" : "bg-secondary")">
+                                @(Model.IsActive ? "Active" : "Inactive")
+                            </span>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <div class="text-muted small">Date Hired</div>
+                        <div>@Model.HireDate?.ToString("MMMM dd, yyyy")</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contact Information -->
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Contact Information</h5>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <div class="text-muted small">Email</div>
+                        <div>@Model.Email</div>
+                    </div>
+                    <div class="mb-3">
+                        <div class="text-muted small">Mobile Number</div>
+                        <div>@Model.ContactNo</div>
+                    </div>
+                    <div class="mb-3">
+                        <div class="text-muted small">Address</div>
+                        <div>@Model.Address</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .employee-profile .card {
+        border: 1px solid #e0e0e0;
+        border-radius: 4px;
+    }
+
+    .employee-profile .card-header {
+        padding: 12px 16px;
+        border-bottom: 1px solid #e0e0e0;
+        background-color: #f8f9fa;
+    }
+
+    .employee-profile .card-body {
+        padding: 16px;
+    }
+
+    .employee-profile .text-muted.small {
+        font-size: 0.875rem;
+        color: #6c757d;
+    }
+
+    .employee-profile .badge {
+        font-size: 0.75rem;
+        padding: 0.35em 0.65em;
+    }
+</style>

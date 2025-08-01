@@ -1,0 +1,98 @@
+﻿@model List<SimpleCMSWeb.Models.ModelView.ClinicDoctorDetailViewModel>
+
+@{
+    ViewBag.Title = "Clinic Doctors";
+    Layout = "_SelectionPage";
+}
+
+<style>
+    .card-title {
+        font-size: 1.25rem;
+    }
+
+    .card-body ul li {
+        margin-bottom: 0.25rem;
+    }
+
+    .btn-outline-primary {
+        transition: all 0.2s ease;
+    }
+
+        .btn-outline-primary:hover {
+            background-color: #0d6efd;
+            color: white;
+        }
+</style>
+
+
+<div class="container py-4">
+    @if (!Model.Any())
+    {
+        <div class="alert alert-warning text-center">
+            No doctors found for this clinic in the specified municipality.
+        </div>
+    }
+    else
+    {
+        <h2 class="text-primary text-center mb-5">Clinic Doctors</h2>
+
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+            @foreach (var doctor in Model)
+            {
+                <div class="col">
+                    <div class="card h-100 shadow border-0 border-start border-4 border-primary rounded-4">
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title text-dark fw-bold mb-3">Dr. @doctor.FullName</h5>
+
+                            <div class="mb-3">
+                                <p class="mb-2 fw-semibold text-secondary">Doctor Schedule:</p>
+                                <ul class="list-unstyled small">
+                                    @foreach (var schedule in doctor.Schedules)
+                                    {
+                                        <li>
+                                            <strong>@schedule.DayOfWeek:</strong>
+                                            @schedule.StartTime.ToString(@"hh\:mm") - @schedule.EndTime.ToString(@"hh\:mm")
+                                        </li>
+                                    }
+                                </ul>
+                            </div>
+
+                            <div class="mt-auto">
+                                <button class="btn btn-outline-primary w-100 book-appointment-btn"
+                                        data-clinicid="@doctor.ClinicId"
+                                        data-clinicdoctorid="@doctor.ClinicDoctorId">
+                                    Book Appointment
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            document.querySelectorAll('.book-appointment-btn').forEach(function (button) {
+                button.addEventListener('click', function () {
+                    const clinicId = button.getAttribute('data-clinicid');
+                    const clinicDoctorId = button.getAttribute('data-clinicdoctorid');
+
+                    const appointmentData = {
+                        clinicId: clinicId,
+                        clinicDoctorId: clinicDoctorId,
+                    };
+
+                    // Save to cookie (1 day expiry)
+                    document.cookie = "appointmentData=" + encodeURIComponent(JSON.stringify(appointmentData)) +
+                        "; path=/; max-age=" + 60 * 60 * 24;
+
+                    // Redirect to Patient Login
+                    window.location.href = "/PatientAccount/Login";
+                });
+            });
+        });
+    </script>
+}
